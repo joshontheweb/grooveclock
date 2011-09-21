@@ -6,9 +6,24 @@
 * http://www.opensource.org/licenses/mit-license.php
 * 5/20/2011
 */	
-	
+
 
 $(document).ready(function() {
+
+    var formattedDate = function() {
+        var date = new Date();
+        minutes = date.getMinutes();
+        var hours = date.getHours();
+        hours = (hours > 12 ? hours - 12 : hours);
+        hours = hours ? hours : 12;
+        return hours+':'+(minutes < 10 ? '0' : '') + minutes;
+    }
+    
+    var $clock = $('.clock').text(formattedDate());
+    var clockInterval = setInterval(function() {
+        var date = new Date();
+        $clock.text(formattedDate());
+    }, 30000);
 
 	/* Tabs Activiation
 	================================================== */
