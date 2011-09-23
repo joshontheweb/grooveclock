@@ -16,14 +16,49 @@ $(document).ready(function() {
         var hours = date.getHours();
         hours = (hours > 12 ? hours - 12 : hours);
         hours = hours ? hours : 12;
-        return hours+':'+(minutes < 10 ? '0' : '') + minutes;
+        return hours+'<span class="colon">:</span>'+(minutes < 10 ? '0' : '') + minutes;
     }
-    
-    var $clock = $('.clock').text(formattedDate());
+    var $clock = $('.clock').html(formattedDate());
+    var date = new Date();
     var clockInterval = setInterval(function() {
-        var date = new Date();
-        $clock.text(formattedDate());
-    }, 30000);
+        var newDate = new Date();
+        if (date.getMinutes() != newDate.getMinutes()) { 
+            date = newDate;
+            var $clock = $('.clock').first();
+            var $newClock = $('<div class="clock">'+ formattedDate() +'</div>');
+            $('.clock-wrapper').append($newClock.html(formattedDate()));
+            $clock.animate({'font-size': 175, 'opacity': 0}, 500, function() {
+                $clock.remove();
+                $clock = $newClock;
+            });
+        }
+
+        $('.colon').toggleClass('on')
+        
+
+    }, 1000);
+    // var formattedDate = function() {
+        //     var date = new Date();
+        //     minutes = date.getMinutes();
+        //     var hours = date.getHours();
+        //     hours = (hours > 12 ? hours - 12 : hours);
+        //     hours = hours ? hours : 12;
+        //     return hours+':'+(minutes < 10 ? '0' : '') + minutes;
+        // }
+        // 
+        // var $clock = $('.clock').text(formattedDate());
+        // var clockInterval = setInterval(function() {
+        //     var date = new Date();
+        //     var $newClock = $('<div class="clock">'+ formattedDate() +'</div>');
+        //     $clock.fadeOut(5000, function() {
+        //         $clock.remove();
+        //     });
+        // 
+        //     $('.clock-wrapper').append($newClock.text(formattedDate()));
+        //     $clock.text(formattedDate());
+        // }, 5000);
+    
+    
 
 	/* Tabs Activiation
 	================================================== */
