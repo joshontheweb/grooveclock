@@ -10,24 +10,92 @@
 
 $(document).ready(function() {
 
-    var formattedDate = function() {
-        var date = new Date();
-        minutes = date.getMinutes();
-        var hours = date.getHours();
-        hours = (hours > 12 ? hours - 12 : hours);
-        hours = hours ? hours : 12;
-        return hours+'<span class="colon">:</span>'+(minutes < 10 ? '0' : '') + minutes;
+    var Time = function(date) {
+        this.handleArgs(arguments);
+        this.toMeridiumTime();
     }
-    var $clock = $('.clock').html(formattedDate());
+
+    Time.prototype.handleArgs = function(args) {
+        date = args[0] ? args[0] : new Date();
+        if (date instanceof Date) {
+            this.date = date;
+            this.hour = this.date.getHours();
+            this.minute = this.date.getMinutes();
+            this.ampm = this.hour > 11 ? 'pm' : 'am';
+        } else {
+            $.extend(this, date);
+        }
+    }
+    
+    Time.prototype.toHtml = function() {
+        return (this.hour < 10 ? '<span class="invisible">0</span>'+this.hour : this.hour)+'<span class="colon">:</span>'+(this.minute < 10 ? '0' : '') + this.minute;
+    }
+
+    Time.prototype.toJSON = function() {
+        var json = {};
+        var self = this;
+        var key;
+        for (key in this) {
+            if (this.hasOwnProperty(key)) {
+                json[key] = this[key];
+            }
+        }
+        return json;
+    }
+
+    Time.prototype.toMeridiumTime = function() {
+        var hour = (this.hour > 12 ? this.hour - 12 : this.hour);
+        this.hour = hour ? hour : 12;
+    }
+
+    Time.prototype.toMilitaryTime = function(date) {
+        date = date ? date : new Date();
+        this.hour = date.getHours();
+    }
+
+    Time.prototype.toString = function() {
+        var minute = this.minute < 10 ? '0' + this.minute : this.minute
+        return ''+this.hour + minute + this.ampm;
+    }
+
+    var getAlarmTime = function() {
+        var $alarm = $('.set-alarm');
+        var hour = $alarm.find('.hour').val();
+        var minute = $alarm.find('.minute').val();
+        var ampm = $alarm.find('.ampm').val();
+
+        return new Time({hour: hour, minute: minute, ampm: ampm})
+    }
+
+    var getCurrentTime = function() {
+        var time = new Time();
+        return time;
+    }
+
+    var playSong = function() {
+       var embed = $('<object width="250" height="40"><param name="movie" value="http://grooveshark.com/songWidget.swf" /><param name="wmode" value="window" /><param name="allowScriptAccess" value="always" /><param name="flashvars" value="hostname=cowbell.grooveshark.com&playlistID=60018582&style=metal&p=1" /><embed src="http://grooveshark.com/songWidget.swf" type="application/x-shockwave-flash" width="250" height="40" flashvars="hostname=cowbell.grooveshark.com&playlistID=60018582&style=metal&p=0" allowScriptAccess="always" wmode="window" /></object>');
+
+       $('.container').append(embed);
+    }
+
+
+    var time = new Time();
+    var $clock = $('.clock').html(time.toHtml());
     var date = new Date();
     var clockInterval = setInterval(function() {
         var newDate = new Date();
         if (date.getMinutes() != newDate.getMinutes()) { 
+            
+            if (getCurrentTime().toString() == getAlarmTime().toString()) {
+                playSong()
+            }
+
             date = newDate;
+            var time = new Time(newDate);
             var $clock = $('.clock').first();
-            var $newClock = $('<div class="clock">'+ formattedDate() +'</div>');
-            $('.clock-wrapper').append($newClock.html(formattedDate()));
-            $clock.animate({'font-size': 175, 'opacity': 0}, 500, function() {
+            var $newClock = $('<div class="clock">'+ time.toHtml() +'</div>');
+            $('.clock-wrapper').append($newClock.html(time.toHtml()));
+            $clock.animate({'opacity': 0}, 500, function() {
                 $clock.remove();
                 $clock = $newClock;
             });

@@ -1,5 +1,17 @@
-.clock { position: absolute; top: 0; left: 0; width: 960px; font-size: 225px; line-height: 225px; height: 225px; letter-spacing: 15px; font-family: 'geostar'; text-align: center; }
-.clock-wrapper { margin-top: 150px; height: 225px; border: solid black; border-width: 5px 0; }
+body { 
+    background-color:#c2c2c2;
+    background-image: -moz-radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 41em);
+    background-image: -webkit-radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 41em);
+    background-image: -o-radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 41em);
+    background-image: -ms-radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 41em);
+    background-image: radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 21em)
+}
+.clock, .clock-digits { position: absolute; top: 0; left: 0; width: 960px; font-size: 225px; line-height: 600px; height: 600px; letter-spacing: 15px; font-family: 'Digital7Mono'; text-align: center; }
+.clock-digits { opacity: .13; }
+.clock-shadow { height: 300px; position: absolute; bottom: -300px; width: 960px; 
+}
+.clock-wrapper { height: 600px; margin: 0 auto; /*border: solid black; border-width: 5px 0;*/ position: relative; background: url('images/clock.png') center center no-repeat; }
+.invisible { visibility: hidden; }
+.colon { opacity: 0; }
+.colon.on { opacity: 1; }
 
-.colon { visibility: hidden; }
-.colon.on { visibility: visible }
