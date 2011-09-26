@@ -6,11 +6,14 @@ body {
     background-image: -ms-radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 41em);
     background-image: radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 21em)
 }
-.clock, .clock-digits { position: absolute; top: 0; left: 0; width: 960px; font-size: 225px; line-height: 600px; height: 600px; letter-spacing: 15px; font-family: 'Digital7Mono'; text-align: center; }
-.clock-digits { opacity: .13; }
-.clock-shadow { height: 300px; position: absolute; bottom: -300px; width: 960px; 
-}
-.clock-wrapper { height: 600px; margin: 0 auto; /*border: solid black; border-width: 5px 0;*/ position: relative; background: url('images/clock.png') center center no-repeat; }
+.clock, .clock-digits { position: absolute; width: 750px; top: 20%; left: 0; font-size: 225px; line-height: 225px; letter-spacing: 15px; font-family: 'Digital7Mono'; text-align: center; }
+.clock-digits { opacity: .13; text-shadow: none; color: #999; }
+
+.songs-wrapper { position: absolute; top: 30px; left: 85px; }
+.songs-to-play li { margin-right: 20px; display: inline; font-family: 'lcddot'; }
+.clock-wrapper { color: #68A1FD; text-shadow: 0 0 10px rgb(15,127,255); height: 440px; width: 750px; margin: 0 auto; /*border: solid black; border-width: 5px 0;*/ position: relative; background: url('images/clock.png') center center no-repeat; }
+.clock-wrapper a { color: #68a1fd; text-decoration: none; }
+
 .invisible { visibility: hidden; }
 .colon { opacity: 0; }
 .colon.on { opacity: 1; }

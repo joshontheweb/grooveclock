@@ -7,8 +7,15 @@
 * 5/20/2011
 */	
 
+// underscore template languate settings
+_.templateSettings = {
+    interpolate : /\{\{(.+?)\}\}/g, // {{ var }}
+    evaluate: /\{\%(.+?)\%\}/g // {% expression %}
+}; 
 
 $(document).ready(function() {
+
+    var socket = io.connect('', {port: 7777});
 
     var Time = function(date) {
         this.handleArgs(arguments);
@@ -73,7 +80,8 @@ $(document).ready(function() {
     }
 
     var playSong = function() {
-       var embed = $('<object width="250" height="40"><param name="movie" value="http://grooveshark.com/songWidget.swf" /><param name="wmode" value="window" /><param name="allowScriptAccess" value="always" /><param name="flashvars" value="hostname=cowbell.grooveshark.com&playlistID=60018582&style=metal&p=1" /><embed src="http://grooveshark.com/songWidget.swf" type="application/x-shockwave-flash" width="250" height="40" flashvars="hostname=cowbell.grooveshark.com&playlistID=60018582&style=metal&p=0" allowScriptAccess="always" wmode="window" /></object>');
+        var songID = $('.songs-to-play li').first().attr('id');
+       var embed = $('<object width="250" height="40"><param name="movie" value="http://grooveshark.com/songWidget.swf" /><param name="wmode" value="window" /><param name="allowScriptAccess" value="always" /><param name="flashvars" value="hostname=cowbell.grooveshark.com&songID='+songID+'&style=metal&p=1" /><embed src="http://grooveshark.com/songWidget.swf" type="application/x-shockwave-flash" width="250" height="40" flashvars="hostname=cowbell.grooveshark.com&songID='+songID+'&style=metal&p=0" allowScriptAccess="always" wmode="window" /></object>');
 
        $('.container').append(embed);
     }
@@ -105,28 +113,36 @@ $(document).ready(function() {
         
 
     }, 1000);
-    // var formattedDate = function() {
-        //     var date = new Date();
-        //     minutes = date.getMinutes();
-        //     var hours = date.getHours();
-        //     hours = (hours > 12 ? hours - 12 : hours);
-        //     hours = hours ? hours : 12;
-        //     return hours+':'+(minutes < 10 ? '0' : '') + minutes;
-        // }
-        // 
-        // var $clock = $('.clock').text(formattedDate());
-        // var clockInterval = setInterval(function() {
-        //     var date = new Date();
-        //     var $newClock = $('<div class="clock">'+ formattedDate() +'</div>');
-        //     $clock.fadeOut(5000, function() {
-        //         $clock.remove();
-        //     });
-        // 
-        //     $('.clock-wrapper').append($newClock.text(formattedDate()));
-        //     $clock.text(formattedDate());
-        // }, 5000);
-    
-    
+ 
+
+    $('.query').keypress(function(e) {
+        if (typeof searchTimeout !== 'undefined') { clearTimeout(searchTimeout); };
+        searchTimeout = setTimeout(function() {
+            var query = $('.query').val();
+            socket.emit('search', {query: query});
+        }, 300);
+    });
+
+    var $results = $('.results');
+    var $songsToPlay =  $('.songs-to-play');
+    $results.delegate('li', 'click', function(e) {
+        e.preventDefault();
+        $songsToPlay.append($(this).clone());
+    });
+
+    $songsToPlay.delegate('li', 'click', function(e) {
+        e.preventDefault();
+        var $el = $(this);
+        $el.addClass('invisible')
+            .animate({'margin-left': '-'+($el.width() + 20)}, function() {
+                $el.remove();
+            });
+    });
+
+    socket.on('searchResponse', function(data) {
+        var template = _.template($('.search-results-template').html());
+        $results.html(template({results: data}));
+    });
 
 	/* Tabs Activiation
 	================================================== */
