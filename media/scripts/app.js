@@ -28,14 +28,14 @@ $(document).ready(function() {
             this.date = date;
             this.hour = this.date.getHours();
             this.minute = this.date.getMinutes();
-            this.ampm = this.hour > 11 ? 'pm' : 'am';
+            this.meridium = this.hour > 11 ? 'pm' : 'am';
         } else {
             $.extend(this, date);
         }
     }
     
     Time.prototype.toHtml = function() {
-        return (this.hour < 10 ? '<span class="invisible">0</span>'+this.hour : this.hour)+'<span class="colon">:</span>'+(this.minute < 10 ? '0' : '') + this.minute;
+        return (this.hour < 10 ? '<span class="invisible">0</span>'+this.hour : this.hour)+'<span class="colon">:</span>'+(this.minute < 10 ? '0' : '') + this.minute+'<div class="meridium '+this.meridium+'"><div class="am">am</div><div class="pm">pm</div></div>';
     }
 
     Time.prototype.toJSON = function() {
@@ -62,16 +62,16 @@ $(document).ready(function() {
 
     Time.prototype.toString = function() {
         var minute = this.minute < 10 ? '0' + this.minute : this.minute
-        return ''+this.hour + minute + this.ampm;
+        return ''+this.hour + minute + this.meridium;
     }
 
     var getAlarmTime = function() {
         var $alarm = $('.set-alarm');
         var hour = $alarm.find('.hour').val();
         var minute = $alarm.find('.minute').val();
-        var ampm = $alarm.find('.ampm').val();
+        var meridium = $alarm.find('.ampm').val();
 
-        return new Time({hour: hour, minute: minute, ampm: ampm})
+        return new Time({hour: hour, minute: minute, meridium: meridium})
     }
 
     var getCurrentTime = function() {
@@ -88,7 +88,7 @@ $(document).ready(function() {
 
 
     var time = new Time();
-    var $clock = $('.clock').html(time.toHtml());
+    var $clock = $('.digits').html(time.toHtml());
     var date = new Date();
     var clockInterval = setInterval(function() {
         var newDate = new Date();
@@ -100,9 +100,9 @@ $(document).ready(function() {
 
             date = newDate;
             var time = new Time(newDate);
-            var $clock = $('.clock').first();
-            var $newClock = $('<div class="clock">'+ time.toHtml() +'</div>');
-            $('.clock-wrapper').append($newClock.html(time.toHtml()));
+            var $clock = $('.digits').first();
+            var $newClock = $('<div class="digits">'+ time.toHtml() +'</div>');
+            $('.digits-wrapper').append($newClock.html(time.toHtml()));
             $clock.animate({'opacity': 0}, 500, function() {
                 $clock.remove();
                 $clock = $newClock;
@@ -113,6 +113,17 @@ $(document).ready(function() {
         
 
     }, 1000);
+
+    $('.day').click(function() {
+        $(this).toggleClass('off');
+    });
+
+    $('.title').click(function(e) {
+        e.preventDefault();
+        var $digitsWrapper = $('.digits-wrapper');
+        var opacity = +$digitsWrapper.css('opacity') ? 0 : 1;
+        $digitsWrapper.animate({'opacity': opacity});
+    });
  
 
     $('.query').keypress(function(e) {
