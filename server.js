@@ -6,7 +6,7 @@ var express = require('express'),
 var gsApiKey = '9eb8df56a6583b5d15efd6da50f9dc7f'
 var app = express.createServer();
 var io = require('socket.io').listen(app);
-var port = 7777;
+var port = 80;
 
 var transports = ['websocket', 'flashsocket',  'xhr-polling', 'htmlfile', 'jsonp-polling'];
 io.configure(function() {
