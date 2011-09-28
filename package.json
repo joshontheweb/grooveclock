@@ -9,7 +9,7 @@
     "url": "git://github.com/somethingcoded/grooveclock.git"
   },
   "engines": {
-    "node": "~v0.4.11"
+    "node": ""
   },
   "dependencies": {
     "express": "2.4.6",
