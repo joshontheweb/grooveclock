@@ -12,7 +12,8 @@
     "node": "~v0.4.11"
   },
   "dependencies": {
-    "express": "2.4.6"
+    "express": "2.4.6",
+    "socket.io": "0.8.4"
   },
   "devDependencies": {}
 }
