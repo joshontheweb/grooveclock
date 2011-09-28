@@ -1,0 +1,18 @@
+{
+  "author": "joshontheweb <josh@joshontheweb.com> (joshontheweb.com)",
+  "name": "grooveclock",
+  "description": "Cloud audio clock radio",
+  "version": "0.0.0",
+  "homepage": "grooveclock.com",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/somethingcoded/grooveclock.git"
+  },
+  "engines": {
+    "node": "~v0.4.11"
+  },
+  "dependencies": {
+    "express": "2.4.6"
+  },
+  "devDependencies": {}
+}
