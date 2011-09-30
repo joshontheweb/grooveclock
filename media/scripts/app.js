@@ -15,7 +15,7 @@ _.templateSettings = {
 
 $(document).ready(function() {
 
-    var socket = io.connect('', {port: 7777});
+    var socket = io.connect('', {port: 8000});
 
     var Time = function(date) {
         this.handleArgs(arguments);
