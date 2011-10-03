@@ -11,7 +11,33 @@
 _.templateSettings = {
     interpolate : /\{\{(.+?)\}\}/g, // {{ var }}
     evaluate: /\{\%(.+?)\%\}/g // {% expression %}
-}; 
+};
+
+$.fn.typeItOut = function(options, callback) {
+    return this.each(function() {
+        $this = $(this);
+        settings = {
+            text: null,
+            interval: 100
+        };
+
+        _.extend(settings, options);
+
+
+        var i = 0;
+        var intervalID = setInterval(function() {
+            if (i < settings.text.length) {
+                $this.text($this.text() + settings.text[i]);
+                i++
+            } else {
+                clearInterval(intervalID);
+                if(_.isFunction(callback)) { callback(); }
+            }
+        }, settings.interval);
+        
+        return this;
+    });
+}
 
 $(document).ready(function() {
 
@@ -88,7 +114,7 @@ $(document).ready(function() {
 
 
     var time = new Time();
-    var $clock = $('.digits').html(time.toHtml());
+    var $clock = $('.digits .lit').html(time.toHtml());
     var date = new Date();
     var clockInterval = setInterval(function() {
         var newDate = new Date();
@@ -100,9 +126,9 @@ $(document).ready(function() {
 
             date = newDate;
             var time = new Time(newDate);
-            var $clock = $('.digits').first();
-            var $newClock = $('<div class="digits">'+ time.toHtml() +'</div>');
-            $('.digits-wrapper').append($newClock.html(time.toHtml()));
+            var $clock = $('.digits .lit').first();
+            var $newClock = $('<div class="lit">'+ time.toHtml() +'</div>');
+            $('.digits').append($newClock.html(time.toHtml()));
             $clock.animate({'opacity': 0}, 500, function() {
                 $clock.remove();
                 $clock = $newClock;
@@ -118,23 +144,45 @@ $(document).ready(function() {
         $(this).toggleClass('off');
     });
 
+    var showSearch = function(callback) {
+        $('.center-display > div').not('.search').animate({'opacity': 0}, function() {
+            $(this).hide();
+        });
+        $('.center-display .search').css('display', 'block').animate({'opacity': 1}, callback);
+    }
+
+    var showDigits = function(callback) {
+        $('.center-display > div').not('.digits').animate({'opacity': 0}, function() {
+            $(this).hide();
+            $('.search .title').text('');
+        });
+        $('.center-display .digits').css('display', 'block').animate({'opacity': 1}, callback);
+    }
+
+    var searchInit = function (callback) {
+        $('.search .title').typeItOut({text: 'What song? '}, callback);
+        $('.search-input').trigger('select');
+    }
+        
     $('.title').click(function(e) {
         e.preventDefault();
-        var $digitsWrapper = $('.digits-wrapper');
-        var opacity = +$digitsWrapper.css('opacity') ? 0 : 1;
-        $digitsWrapper.animate({'opacity': opacity});
+        var $digitsWrapper = $('.digits');
+        
+        
+        +$digitsWrapper.css('opacity') ? showSearch(searchInit) : showDigits();
+
     });
  
 
-    $('.query').keypress(function(e) {
+    $('.search-input').keypress(function(e) {
         if (typeof searchTimeout !== 'undefined') { clearTimeout(searchTimeout); };
         searchTimeout = setTimeout(function() {
-            var query = $('.query').val();
+            var query = $('.search-input').val();
             socket.emit('search', {query: query});
         }, 300);
     });
 
-    var $results = $('.results');
+    var $results = $('.search-results');
     var $songsToPlay =  $('.songs-to-play');
     $results.delegate('li', 'click', function(e) {
         e.preventDefault();
@@ -152,8 +200,12 @@ $(document).ready(function() {
 
     socket.on('searchResponse', function(data) {
         var template = _.template($('.search-results-template').html());
-        $results.html(template({results: data}));
+        var $rendered = $(template({results: data}));
+        $results.html($rendered);
+        $rendered.animate({'opacity': 1});
     });
+
+
 
 	/* Tabs Activiation
 	================================================== */

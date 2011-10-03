@@ -16,7 +16,8 @@
     "socket.io": "0.8.4",
     "socket.io-client": "~0.8.4",
     "policyfile": "0.0.4",
-    "redis": "~0.6.7"
+    "redis": "~0.6.7",
+    "uglify-js": "~1.1.0"
   },
   "devDependencies": {}
 }

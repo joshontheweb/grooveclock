@@ -1,10 +1,5 @@
 body { 
-    background-color:#c2c2c2;
-    background-image: -moz-radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 41em);
-    background-image: -webkit-radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 41em);
-    background-image: -o-radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 41em);
-    background-image: -ms-radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 41em);
-    background-image: radial-gradient(53% 85%, ellipse closest-side, #999, #e8e8e8 21em)
+    background-color: #111;
 }
 
 ::selection {
@@ -13,25 +8,32 @@ body {
 ::-moz-selection {
         background: transparent;
 }
-.digits, .ghost-digits { position: absolute; width: 750px; top: 20%; left: 0; font-size: 225px; line-height: 225px; letter-spacing: 15px; font-family: 'Digital7Mono'; text-align: center; }
-.ghost-digits { opacity: .13; text-shadow: none; color: #999; }
+.center-display { width: 750px; position: absolute; top: 75px; left: 75px; height: 225px; }
+.center-display > div,
+.center-display .digits > div { position: absolute; top: 0; left: 0; }
+.center-display .digits { font-size: 225px; line-height: 225px; letter-spacing: 15px; font-family: 'Digital7Mono'; text-align: center; }
+.ghost { opacity: .13; text-shadow: none; color: #999; }
+.search { opacity: 0; top: 25px !important; left: 12px !important; font-family: 'lcddot'; }
+.search .title { height: 21px; }
+.search .search-input { background: #111; border: none !important; color: #68A1FD !important; }
+.search .search-results li { opacity: 0; }
 
-.songs-wrapper { position: absolute; top: 30px; left: 85px; }
-.songs-wrapper .title { font-family: helvetica 'sans-serif'; font-variant: small-caps; }
+.top-display { position: absolute; top: 30px; left: 85px; }
+.top-display .title { font-family: helvetica 'sans-serif'; font-variant: small-caps; }
 .songs-to-play li { margin-right: 20px; display: inline; font-family: 'lcddot'; text-highlight-color:  }
-.clock { color: #68A1FD; text-shadow: 0 0 10px rgb(15,127,255); height: 440px; width: 750px; margin: 0 auto; /*border: solid black; border-width: 5px 0;*/ position: relative; background: url('images/clock.png') center center no-repeat; }
+.clock { color: #68A1FD; text-shadow: 0 0 10px rgb(15,127,255); height: 440px; width: 750px; margin: 0 auto; /*border: solid black; border-width: 5px 0;*/ position: relative; /*background: url('images/clock.png') center center no-repeat; */}
 .clock a { color: #68a1fd; text-decoration: none; }
 
 .invisible { visibility: hidden; }
 .colon { opacity: 0; }
 .colon.on { opacity: 1; }
 
-.meridium { font-size: 30px; line-height: 30px; position: absolute; right: 20px; top: 45px; font-family: helvetica 'sans-serif'; font-variant: small-caps; }
+.meridium { font-size: 30px; line-height: 30px; position: absolute; right: -60px; top: 45px; font-family: helvetica 'sans-serif'; font-variant: small-caps; }
 .meridium.pm .am,
 .meridium.am .pm { color: #999; text-shadow: none; opacity: .13; }
 
 .days { width: 750px; height: 75px; position: absolute; bottom: 15px; left: 90px; }
-.days .day { float: left; margin-right: 53px; font-size: 20px; cursor: pointer; }
+.days .day {float: left; margin-right: 53px; font-size: 20px; cursor: pointer; }
 .days .day.off { color: #999; text-shadow: none; opacity: .13; }
 .days .day.off:hover { color: #68a1fd; opacity: .7; }
 
