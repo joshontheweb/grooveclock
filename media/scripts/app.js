@@ -187,6 +187,7 @@ $(document).ready(function() {
     $results.delegate('li', 'click', function(e) {
         e.preventDefault();
         $songsToPlay.append($(this).clone());
+        showDigits();
     });
 
     $songsToPlay.delegate('li', 'click', function(e) {

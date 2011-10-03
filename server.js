@@ -89,7 +89,7 @@ io.sockets.on('connection', function(socket) {
         var options = {
             host: 'tinysong.com',
             port: 80,
-            path: '/s/'+data.query.replace(/ /, '+')+'?format=json&limit=3&key='+gsApiKey
+            path: '/s/'+data.query.replace(/ /, '+')+'?format=json&limit=5&key='+gsApiKey
         };
 
         searchTinySong(options);
